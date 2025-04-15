@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (res.data.success === false) {
-        // If email already exists or other validation error
         toast.error(res.data.message || "Registration failed", {
           position: "top-right",
           autoClose: 5000,
@@ -31,7 +30,7 @@ export const AuthProvider = ({ children }) => {
             marginTop: "2px",
           },
         });
-        return; // stop execution
+        return { success: false }; // 👈 return failure
       }
 
       const { token, user } = res.data;
@@ -54,6 +53,8 @@ export const AuthProvider = ({ children }) => {
           marginTop: "2px",
         },
       });
+
+      return { success: true }; // 👈 return success
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "An error occurred", {
@@ -71,6 +72,7 @@ export const AuthProvider = ({ children }) => {
           marginTop: "2px",
         },
       });
+      return { success: false }; // 👈 also return failure on catch
     }
   };
 

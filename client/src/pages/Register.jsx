@@ -14,24 +14,18 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //checking for data
+
     const isValid = validateForm(data);
-    //stoping if data is not filled
-    if (!isValid) {
-      return;
+    if (!isValid) return;
+
+    const result = await register(data); // 👈 wait for register response
+
+    if (result.success) {
+      setData({ name: "", email: "", password: "" });
+      navigate("/"); // 👈 only navigate on success
     }
-
-    //sending data to backend
-    register(data);
-
-    setData({
-      name: "",
-      email: "",
-      password: "",
-    });
-    navigate("/");
   };
 
   const handleChange = (e) => {
