@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 
 let corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://full-stack-authentication-web-app.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
