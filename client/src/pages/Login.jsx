@@ -13,7 +13,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //validating form data
     let isValid = validateForm(data);
@@ -21,13 +21,12 @@ const Login = () => {
       return;
     }
     //sending data to login
-    login(data);
-    //clearing the form
-    setData({
-      email: "",
-      password: "",
-    });
-    navigate("/");
+    const result = await login(data);
+
+    if (result.success) {
+      setData({ email: "", password: "" });
+      navigate("/"); // 👈 only navigate on success
+    }
   };
 
   const handleChange = (e) => {

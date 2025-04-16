@@ -82,9 +82,29 @@ export const AuthProvider = ({ children }) => {
         `${import.meta.env.VITE_API_URL}/auth/api/login`,
         data
       );
+
+      if (res.data.success === false) {
+        toast.error(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          style: {
+            backgroundColor: "white",
+            color: "red",
+            fontWeight: "bold",
+            borderRadius: "10px",
+            marginTop: "2px",
+          },
+        });
+        return { success: false }; // 👈 return failure
+      }
+
       const { user, token } = res.data;
       localStorage.setItem("token", token);
-      localStorage.setItem("currUser", JSON.stringify({ name: user.name }));
+      localStorage.setItem("currUser", JSON.stringify({ name: user?.name }));
       setCurrUser(user);
 
       toast.success(res.data.message, {
@@ -102,6 +122,7 @@ export const AuthProvider = ({ children }) => {
           marginTop: "2px", // margin top
         },
       });
+      return { success: true }; // 👈 return success
     } catch (error) {
       toast.error(error.message || "An error Occured", {
         position: "top-right", // Position of the toast
@@ -118,6 +139,7 @@ export const AuthProvider = ({ children }) => {
           marginTop: "2px", // margin top
         },
       });
+      return { success: false };
     }
   };
 

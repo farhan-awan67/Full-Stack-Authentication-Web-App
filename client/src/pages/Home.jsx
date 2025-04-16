@@ -17,7 +17,7 @@ const Home = () => {
           src={assets.header_img}
           alt="head"
         />
-        <h1 className="text-xl sm:text-3xl flex justify-center items-center gap-2 font-semibold m-0">
+        <h1 className="text-xl sm:text-3xl flex justify-center items-center gap-2 font-semibold m-0 capitalize">
           Hey {currUser?.name || "Developer"}
           <img
             className="w-8 aspect-square"

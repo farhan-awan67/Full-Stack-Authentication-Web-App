@@ -10,12 +10,10 @@ const Header = () => {
   const firstLetter = name.charAt(0).toUpperCase();
   return (
     <div className="flex justify-between items-center py-1 px-2 sm:px-11">
-      <h1 className="font-bold text-[35px] leading-tight">
-        Mern Auth
-      </h1>
+      <h1 className="font-bold text-[35px] leading-tight">Mern Auth</h1>
 
       {currUser ? (
-        <button className="rounded-[60px] py-1.5 px-3 sm:py-2 sm:px-3.5 font-bold text-white border-none bg-green-800 text-[16px] text-center">
+        <button className="rounded-[50px] py-[6px] px-[13px] sm:py-[7px] sm:px-[15px] font-bold text-white border-none bg-green-800 text-[18px] text-center">
           {firstLetter}
         </button>
       ) : (

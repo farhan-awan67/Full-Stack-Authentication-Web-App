@@ -2,6 +2,12 @@ import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
+const generatetoken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "1h", // Default to 1 hour if not set
+  });
+};
+
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   //if field is not available
@@ -25,7 +31,15 @@ export const register = asyncHandler(async (req, res) => {
     password,
   });
 
-  res.json({ success: true, message: "user created successfully", user });
+  //creating token
+  const token = generatetoken(user._id);
+
+  res.json({
+    success: true,
+    message: "user created successfully",
+    user,
+    token,
+  });
 });
 
 export const login = asyncHandler(async (req, res) => {
@@ -43,13 +57,7 @@ export const login = asyncHandler(async (req, res) => {
     return res.json({ success: false, message: "incorrect email or password" });
   }
   //creating token
-  const token = jwt.sign(
-    { id: user._id, normalizedEmail },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN || "1h", // Default to 1 hour if not set
-    }
-  );
+  const token = generatetoken(user._id);
 
   //response
   res.status(200).json({
