@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
+import useTogglePassword from "../hooks/useTogglePassword.js";
 
 const Register = () => {
   const { register } = useContext(AuthContext);
@@ -13,6 +14,8 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { inputType, togglePassword } = useTogglePassword();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +23,9 @@ const Register = () => {
     const isValid = validateForm(data);
     if (!isValid) return;
 
+    setLoading(true);
     const result = await register(data); // 👈 wait for register response
+    setLoading(false);
 
     if (result.success) {
       setData({ name: "", email: "", password: "" });
@@ -79,7 +84,7 @@ const Register = () => {
           Create your account
         </h1>
         <form onSubmit={handleSubmit} action="" className="flex flex-col">
-          <div className="bg-[#333A5C] rounded-full flex justify-center items-center px-5 py-2 mb-4 gap-3">
+          <div className="bg-[#333A5C] rounded-full flex justify-start items-center px-5 py-2 mb-4 gap-3">
             <img src={assets.person_icon} alt="user" />
             <input
               className="bg-transparent outline-none text-white"
@@ -91,7 +96,7 @@ const Register = () => {
               autoComplete="off"
             />
           </div>
-          <div className="bg-[#333A5C] rounded-full flex justify-center items-center px-5 py-2 mb-4 gap-3">
+          <div className="bg-[#333A5C] rounded-full flex justify-start items-center px-5 py-2 mb-4 gap-3">
             <img src={assets.person_icon} alt="user" />
             <input
               className="bg-transparent outline-none text-white"
@@ -104,19 +109,32 @@ const Register = () => {
             />
           </div>
           <div className="bg-[#333A5C] rounded-full flex justify-center items-center px-5 py-2 mb-4 gap-3">
-            <img src={assets.person_icon} alt="user" />
+            <img src={assets.lock_icon} alt="user" />
             <input
               className="bg-transparent outline-none text-white"
-              type="text"
+              type={inputType}
               placeholder="Password"
               name="password"
               value={data.password}
               onChange={handleChange}
               autoComplete="off"
             />
+            {inputType === "password" ? (
+              <i
+                onClick={togglePassword}
+                className="fa-solid fa-eye-slash text-[#B3C0FF] cursor-pointer"
+              />
+            ) : (
+              <i
+                onClick={togglePassword}
+                className="fa-solid fa-eye text-[#B3C0FF] cursor-pointer"
+              />
+            )}
           </div>
-          <button className="bg-[#333A5C] text-white rounded-full py-2">
-            Sign Up
+          <button
+            className={`bg-[#333A5C] text-white rounded-full py-2 px-4 flex items-center justify-center`}
+          >
+            {loading ? <span className="spinner" /> : "Sign Up"}
           </button>
         </form>
       </div>

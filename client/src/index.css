@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   margin: 0;
   padding: 0;
@@ -11,3 +10,20 @@
   font-family: "Roboto", serif;
 }
 
+.spinner {
+  border: 4px solid #f3f3f3; /* Light gray */
+  border-top: 4px solid #333a5c; /* Blue color */
+  border-radius: 50%; /* Circular spinner */
+  width: 24px; /* Adjusted size for a better look */
+  height: 24px;
+  animation: spin 0.7s linear infinite; /* Slower spin for smoother animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
